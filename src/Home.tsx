@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, Image, ScrollView } from "react-native";
 import * as Speech from "expo-speech";
-import Header from "../../components/Header";
+import Header from "../components/Header";
 interface ContentScreenProps {
   navigateTo: (screen: string) => void;
 }
