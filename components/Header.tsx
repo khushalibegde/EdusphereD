@@ -44,15 +44,18 @@ const Header = ({ name, age }: HeaderProps) => {
   };
 
   return (
-    <Animated.View style={[styles.header, { opacity: fadeAnim }]}>
+    <Animated.View style={[styles.header, { opacity: fadeAnim }]} >
       <Animated.Text style={[styles.floatingElement, { transform: [{ translateY: floatAnim }] }]}>🎈</Animated.Text>
       <Animated.Text style={[styles.floatingElement, { transform: [{ translateY: floatAnim }] }]}>☁️</Animated.Text>
 
       <Text style={styles.mascot}>🐻</Text>
 
-      <View style={{ alignItems: "center" }}>
+      <View style={{ alignItems: "center" }} >
+        <TouchableOpacity onPress={speak} >
         <Text style={styles.headerText}>Hello, {name}!</Text>
         <Text style={styles.subText}>{age} years old 🎉</Text>
+        </TouchableOpacity>
+        
       </View>
 
       <TouchableOpacity onPress={speak} style={styles.soundButton}>
