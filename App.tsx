@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { View, StyleSheet } from "react-native";
-import { GestureHandlerRootView } from "react-native-gesture-handler";  // ✅ Import Gesture Handler
+import React, { useState, useEffect } from "react";
+import { View, StyleSheet, BackHandler, Alert } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler"; 
 import BottomTabBar from "./components/BottomTabBar";
 import Home from "./src/screens/Home";
 import FestivalSelection from "./src/screens/FestivalSelection";
@@ -29,18 +29,38 @@ import NightScreen from "./src/screens/NightScreen";
 import HelloScreen from "./src/screens/HelloScreen";
 import MeetScreen from "./src/screens/MeetScreen";
 
-
-
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState("Home");
+  const [previousScreen, setPreviousScreen] = useState<string | null>(null);
 
   const navigateTo = (screen: string) => {
+    setPreviousScreen(currentScreen); // Store previous screen
     setCurrentScreen(screen);
   };
 
+  useEffect(() => {
+    const handleBackPress = () => {
+      if (currentScreen !== "Home") {
+        setCurrentScreen(previousScreen || "Home");
+        return true; // Prevent default back action
+      } else {
+        Alert.alert("Exit App", "Do you want to exit?", [
+          { text: "Cancel", style: "cancel" },
+          { text: "Exit", onPress: () => BackHandler.exitApp() },
+        ]);
+        return true;
+      }
+    };
+
+    BackHandler.addEventListener("hardwareBackPress", handleBackPress);
+
+    return () => {
+      BackHandler.removeEventListener("hardwareBackPress", handleBackPress);
+    };
+  }, [currentScreen, previousScreen]);
+
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}> 
-      {/* ✅ Wrap the entire app in GestureHandlerRootView */}
+    <GestureHandlerRootView style={{ flex: 1 }}>
       <View style={styles.container}>
         <View style={styles.screenContainer}>
           {currentScreen === "Home" && <Home navigateTo={navigateTo} />}
@@ -50,28 +70,27 @@ export default function App() {
           {currentScreen === "MRPScreen" && <MRPScreen />}
           {currentScreen === "ComputerScreen" && <ComputerScreen />}
           {currentScreen === "GreetingsScreen" && <GreetingsScreen navigateTo={navigateTo} />}
-          {currentScreen === "HelplineScreen" && <HelplineScreen navigateTo={navigateTo}/>}
+          {currentScreen === "HelplineScreen" && <HelplineScreen navigateTo={navigateTo} />}
           {currentScreen === "MobileScreen" && <MobileScreen />}
           {currentScreen === "TrafficScreen" && <TrafficScreen />}
           {currentScreen === "Feelings" && <Feelings />}
           {currentScreen === "RescueScreen" && <RescueScreen />}
           {currentScreen === "FestivalSelection" && <FestivalSelection navigateTo={navigateTo} />}
           {currentScreen === "DiwaliPage" && <DiwaliPage navigateTo={navigateTo} />}
-          {currentScreen === "DiwaliItemsPage" && <DiwaliItemsPage navigateTo={navigateTo}/>}
-          {currentScreen === "DiwaliPracticePage" && <DiwaliPracticePage/>}
-          {currentScreen === "EidPage" && <EidPage navigateTo={navigateTo}/>}
-          {currentScreen === "EidItemsPage" && <EidItemsPage navigateTo={navigateTo}/>}
-          {currentScreen === "EidPracticePage" && <EidPracticePage/>}
-          {currentScreen === "ChristmasPage" && <ChristmasPage navigateTo={navigateTo}/>}
-          {currentScreen === "ChristmasItemsPage" && <ChristmasItemsPage navigateTo={navigateTo}/>}
-          {currentScreen === "ChristmasPracticePage" && <ChristmasPracticePage/>}
-          {currentScreen === "MorningScreen" && <MorningScreen/>}
-          {currentScreen === "NightScreen" && <NightScreen/>}
-          {currentScreen === "HelloScreen" && <HelloScreen/>}
-          {currentScreen === "MeetScreen" && <MeetScreen/>}
+          {currentScreen === "DiwaliItemsPage" && <DiwaliItemsPage navigateTo={navigateTo} />}
+          {currentScreen === "DiwaliPracticePage" && <DiwaliPracticePage />}
+          {currentScreen === "EidPage" && <EidPage navigateTo={navigateTo} />}
+          {currentScreen === "EidItemsPage" && <EidItemsPage navigateTo={navigateTo} />}
+          {currentScreen === "EidPracticePage" && <EidPracticePage />}
+          {currentScreen === "ChristmasPage" && <ChristmasPage navigateTo={navigateTo} />}
+          {currentScreen === "ChristmasItemsPage" && <ChristmasItemsPage navigateTo={navigateTo} />}
+          {currentScreen === "ChristmasPracticePage" && <ChristmasPracticePage />}
+          {currentScreen === "MorningScreen" && <MorningScreen />}
+          {currentScreen === "NightScreen" && <NightScreen />}
+          {currentScreen === "HelloScreen" && <HelloScreen />}
+          {currentScreen === "MeetScreen" && <MeetScreen />}
         </View>
 
-        {/* Bottom Tab Bar stays fixed at the bottom */}
         <View style={styles.bottomTabContainer}>
           <BottomTabBar navigateTo={navigateTo} />
         </View>
@@ -85,9 +104,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   screenContainer: {
-    flex: 1, // Ensures this takes full space except bottom tab
+    flex: 1,
   },
   bottomTabContainer: {
-    height: 65, // Adjust based on your BottomTabBar height
+    height: 65,
   },
 });
