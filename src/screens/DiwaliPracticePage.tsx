@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, Image } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import ConfettiCannon from "react-native-confetti-cannon";
 import * as Speech from "expo-speech";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -28,19 +27,18 @@ const DiwaliPracticePage = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
   const [showConfetti, setShowConfetti] = useState(false);
+  const [disabledOptions, setDisabledOptions] = useState<number[]>([]); // Track disabled options
 
   const speak = (text: string) => {
     Speech.stop();
-    Speech.speak(text,
-    {
+    Speech.speak(text, {
       language: "mr-IN",
       pitch: 1.0,
       rate: 0.9,
-    }
-    );
+    });
   };
 
-  const handleAnswer = (option: { isCorrect: boolean; label: string }) => {
+  const handleAnswer = (option: { isCorrect: boolean; label: string }, index: number) => {
     speak(option.label); // Speak what the image represents
 
     if (option.isCorrect) {
@@ -48,13 +46,18 @@ const DiwaliPracticePage = () => {
       setShowConfetti(true);
 
       setTimeout(() => setShowConfetti(false), 1000);
+    } else {
+      setDisabledOptions([...disabledOptions, index]); // Disable selected wrong option
     }
 
     setTimeout(() => {
-      if (currentQuestion < questions.length - 1) {
-        setCurrentQuestion(currentQuestion + 1);
-      } else {
-        alert(`Your score: ${score + (option.isCorrect ? 1 : 0)}/${questions.length}`);
+      if (option.isCorrect) {
+        if (currentQuestion < questions.length - 1) {
+          setCurrentQuestion(currentQuestion + 1);
+          setDisabledOptions([]); // Reset disabled options for new question
+        } else {
+          alert(`Your score: ${score + 1}/${questions.length}`);
+        }
       }
     }, 1500);
   };
@@ -72,7 +75,13 @@ const DiwaliPracticePage = () => {
       {/* Answer Options */}
       <View className="w-full flex-row flex-wrap justify-center items-center">
         {questions[currentQuestion].options.map((option, index) => (
-          <TouchableOpacity key={index} onPress={() => handleAnswer(option)} className="m-2">
+          <TouchableOpacity
+            key={index}
+            onPress={() => handleAnswer(option, index)}
+            className="m-2"
+            disabled={disabledOptions.includes(index)} // Disable if already selected
+            style={{ opacity: disabledOptions.includes(index) ? 0.5 : 1 }} // Dim disabled option
+          >
             <Image source={option.image} className="w-40 h-40 rounded-xl" resizeMode="cover" />
           </TouchableOpacity>
         ))}
