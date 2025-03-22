@@ -40,7 +40,7 @@ EduSphere **transforms learning into an engaging adventure**, making it:
 ## 🛠 Tech Stack  
 
 - **Frontend:** React Native (Expo), NativeWind CSS  
-- **Backend:** Supabase (if applicable in future updates)  
+- **Backend:** MongoDB (if applicable in future updates)  
 
 ---
 
