@@ -24,6 +24,11 @@ import EidPracticePage from "./src/screens/EidPracticePage";
 import ChristmasPage from "./src/screens/ChristmasPage";
 import ChristmasItemsPage from "./src/screens/ChristmasItemsPage";
 import ChristmasPracticePage from "./src/screens/ChristmasPracticePage";
+import MorningScreen from "./src/screens/MorningScreen";
+import NightScreen from "./src/screens/NightScreen";
+import HelloScreen from "./src/screens/HelloScreen";
+import MeetScreen from "./src/screens/MeetScreen";
+
 
 
 export default function App() {
@@ -44,7 +49,7 @@ export default function App() {
           {currentScreen === "BirthdayScreen" && <BirthdayScreen />}
           {currentScreen === "MRPScreen" && <MRPScreen />}
           {currentScreen === "ComputerScreen" && <ComputerScreen />}
-          {currentScreen === "GreetingsScreen" && <GreetingsScreen />}
+          {currentScreen === "GreetingsScreen" && <GreetingsScreen navigateTo={navigateTo} />}
           {currentScreen === "HelplineScreen" && <HelplineScreen navigateTo={navigateTo}/>}
           {currentScreen === "MobileScreen" && <MobileScreen />}
           {currentScreen === "TrafficScreen" && <TrafficScreen />}
@@ -60,6 +65,10 @@ export default function App() {
           {currentScreen === "ChristmasPage" && <ChristmasPage navigateTo={navigateTo}/>}
           {currentScreen === "ChristmasItemsPage" && <ChristmasItemsPage navigateTo={navigateTo}/>}
           {currentScreen === "ChristmasPracticePage" && <ChristmasPracticePage/>}
+          {currentScreen === "MorningScreen" && <MorningScreen/>}
+          {currentScreen === "NightScreen" && <NightScreen/>}
+          {currentScreen === "HelloScreen" && <HelloScreen/>}
+          {currentScreen === "MeetScreen" && <MeetScreen/>}
         </View>
 
         {/* Bottom Tab Bar stays fixed at the bottom */}
