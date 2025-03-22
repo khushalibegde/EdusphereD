@@ -16,11 +16,7 @@ const Home = ({ navigateTo }: ContentScreenProps) => {
 
   const speak = (text: string): void => {
     Speech.stop(); 
-    Speech.speak(text, {
-      language: "hi-IN", 
-      pitch: 1.0, 
-      rate: 1.0, 
-    });
+    Speech.speak(text);
     setSelectedItem(text);
   };
   
@@ -44,12 +40,12 @@ const Home = ({ navigateTo }: ContentScreenProps) => {
     { text: "Learn Computer Features! 💻", image: require("../../assets/images/computer.png"), speechText: "Learn About Computer Features" },
     { text: "Everyday Greetings! 👋😊", image: require("../../assets/images/greetings.png"), speechText: "Everyday Greetings!" },
     { text: "Celebrate Festivals! 🎉🌟", image: require("../../assets/images/festivals.png"), speechText: "Celebrate Festivals" },
-    /*{ text: "How Do I Feel? 😊🎭", image: require("../../assets/images/emotions.png"), speechText: "How Do I Feel?" },*/
+    { text: "How Do I Feel? 😊🎭", image: require("../../assets/images/emotions.png"), speechText: "How Do I Feel?" },
   ];
 
   return (
     <View style={{ flex: 1, backgroundColor: "#F3F8FF" }}>
-      <Header name="Khushali" age={20} />
+      <Header name="Madhav" age={20} />
       <ScrollView contentContainerStyle={{ alignItems: "center", paddingVertical: 20 }}>
         {options.map((item, index) => {
           const backgroundColor = selectedItem === item.speechText ? "#1E40AF" : colors[index % colors.length];
@@ -69,59 +65,19 @@ const Home = ({ navigateTo }: ContentScreenProps) => {
                 height: 150,
                 borderColor,
                 borderWidth: 3, 
-                paddingHorizontal: 10, 
               }}
               onPress={() => {
                 if(item.text == "Celebrate Festivals! 🎉🌟"){
                   speak(item.speechText);
                   navigateTo("FestivalSelection");
-                } 
-                if(item.text == "How Do I Feel? 😊🎭"){
+                } else{
                   speak(item.speechText);
-                  navigateTo("Feelings");
                 }
-                if(item.text == "Learn My Birthday! 🎉📅"){
-                  speak(item.speechText);
-                  navigateTo("BirthdayScreen");
-                }
-                if(item.text == "Learn Helpline Numbers! ☎️"){
-                  speak(item.speechText);
-                  navigateTo("HelplineScreen");
-                }
-                if(item.text == "Learn Traffic Signals! 🚦🚗" ){
-                  speak(item.speechText);
-                  navigateTo("TrafficScreen");
-                }
-                if(item.text == "Find MRP & Expiry Date!🛒🔍"){
-                  speak(item.speechText);
-                  navigateTo("MRPScreen");
-                }
-                if(item.text == "Learn Mobile Features! 📱✨"){ 
-                  speak(item.speechText);
-                  navigateTo("MobileScreen");
-                }
-                if(item.text == "Learn Computer Features! 💻"){
-                  speak(item.speechText);
-                  navigateTo("ComputerScreen");
-                }
-                if(item.text == "Everyday Greetings! 👋😊"){
-                  speak(item.speechText);
-                  navigateTo("GreetingsScreen");
-                }
-                else{
-                speak(item.speechText);
-              }}}
+              }
+              }
             >
               <Image source={item.image} style={{ width: 130, height: 130 }} />
-              <Text style={{ 
-                  color: "white", 
-                  fontSize: 18, 
-                  fontWeight: "700",
-                  flexShrink: 1, 
-                }} 
-                numberOfLines={2} 
-                ellipsizeMode="tail" 
-              >{item.text}</Text>
+              <Text style={{ color: "white", fontSize: 18, fontWeight: "700" }}>{item.text}</Text>
             </TouchableOpacity>
           );
         })}
