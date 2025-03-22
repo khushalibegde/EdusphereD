@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
-import * as Speech from "expo-speech"; 
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as Speech from "expo-speech";
 
 const moods = [
   { color: "yellow", label: "Happy", speech: "Happy, cheerful", image: require("../../assets/images/happy2.png") },
@@ -13,21 +14,50 @@ const moods = [
 const months = [
   { name: "January", days: 31 },
   { name: "February", days: 28 },
-  { name: "March", days: 31 }
+  { name: "March", days: 31 },
 ];
+
+const today = new Date();
+const currentDay = today.getDate();
+const currentMonthIndex = today.getMonth(); 
 
 export default function MoodTracker() {
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
   const [moodData, setMoodData] = useState<Record<string, string>>({});
 
-  const handleMoodSelect = (color: string, speech: string): void => {
-    setSelectedMood(color);
-    Speech.speak(speech); 
+  useEffect(() => {
+    loadMoodData();
+  }, []);
+
+  const loadMoodData = async () => {
+    try {
+      const savedData = await AsyncStorage.getItem("moodData");
+      if (savedData) {
+        setMoodData(JSON.parse(savedData));
+      }
+    } catch (error) {
+      console.error("Failed to load mood data", error);
+    }
   };
 
-  const handleDayPress = (month: string, day: number): void => {
-    if (selectedMood) {
-      setMoodData({ ...moodData, [`${month}-${day}`]: selectedMood });
+  const saveMoodData = async (data: Record<string, string>) => {
+    try {
+      await AsyncStorage.setItem("moodData", JSON.stringify(data));
+    } catch (error) {
+      console.error("Failed to save mood data", error);
+    }
+  };
+
+  const handleMoodSelect = (color: string, speech: string): void => {
+    setSelectedMood(color);
+    Speech.speak(speech);
+  };
+
+  const handleDayPress = (monthIndex: number, day: number): void => {
+    if (selectedMood && (monthIndex < currentMonthIndex || (monthIndex === currentMonthIndex && day <= currentDay))) {
+      const updatedData = { ...moodData, [`${months[monthIndex].name}-${day}`]: selectedMood };
+      setMoodData(updatedData);
+      saveMoodData(updatedData);
     }
   };
 
@@ -36,19 +66,27 @@ export default function MoodTracker() {
       <Text style={styles.header}>Mood Tracker - 2025</Text>
       <View style={styles.content}>
         <View style={styles.monthsContainer}>
-          {months.map((month) => (
+          {months.map((month, monthIndex) => (
             <View key={month.name} style={styles.monthContainer}>
               <Text style={styles.monthText}>{month.name}</Text>
               <View style={styles.gridContainer}>
-                {Array.from({ length: month.days }, (_, i) => i + 1).map((day) => (
-                  <TouchableOpacity
-                    key={day}
-                    style={[styles.dayBox, { backgroundColor: moodData[`${month.name}-${day}`] || "white" }]}
-                    onPress={() => handleDayPress(month.name, day)}
-                  >
-                    <Text style={styles.dayText}>{day}</Text>
-                  </TouchableOpacity>
-                ))}
+                {Array.from({ length: month.days }, (_, i) => i + 1).map((day) => {
+                  const isDisabled = monthIndex > currentMonthIndex || (monthIndex === currentMonthIndex && day > currentDay);
+                  return (
+                    <TouchableOpacity
+                      key={day}
+                      style={[
+                        styles.dayBox,
+                        { backgroundColor: moodData[`${month.name}-${day}`] || (isDisabled ? "#ddd" : "white") },
+                        isDisabled && styles.disabledDay
+                      ]}
+                      onPress={() => !isDisabled && handleDayPress(monthIndex, day)}
+                      disabled={isDisabled}
+                    >
+                      <Text style={styles.dayText}>{day}</Text>
+                    </TouchableOpacity>
+                  );
+                })}
               </View>
             </View>
           ))}
@@ -88,6 +126,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#ccc",
   },
+  disabledDay: {
+    opacity: 0.5,
+  },
   dayText: { fontSize: 11 },
 });
-
