@@ -35,6 +35,7 @@ const Header = ({ name, age }: HeaderProps) => {
   }, []);
 
   const speak = () => {
+    Speech.stop(); 
     Speech.speak(`Hello ${name}, you are ${age} years old!`,{
       language: "hi-IN", 
       pitch: 1.0, 

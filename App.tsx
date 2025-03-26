@@ -34,7 +34,7 @@ export default function App() {
   const [previousScreen, setPreviousScreen] = useState<string | null>(null);
 
   const navigateTo = (screen: string) => {
-    setPreviousScreen(currentScreen); // Store previous screen
+    setPreviousScreen(currentScreen); 
     setCurrentScreen(screen);
   };
 
@@ -42,7 +42,7 @@ export default function App() {
     const handleBackPress = () => {
       if (currentScreen !== "Home") {
         setCurrentScreen(previousScreen || "Home");
-        return true; // Prevent default back action
+        return true; 
       } else {
         Alert.alert("Exit App", "Do you want to exit?", [
           { text: "Cancel", style: "cancel" },

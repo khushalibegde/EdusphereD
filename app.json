@@ -37,6 +37,15 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "939d6b9e-12e4-4fb9-80c0-43df1d0a4e8a"
+      }
+    },
+    "owner": "khushalibegde"
   }
 }

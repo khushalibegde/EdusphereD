@@ -9,7 +9,7 @@ export default function BirthdayLearningScreen() {
   const [yearDigits, setYearDigits] = useState(["_", "_", "_", "_"]);
   const confettiRef = useRef<ConfettiCannon | null>(null);
   const birthdayText = "April 13, 2004";
-  const bounceAnim = useRef(new Animated.Value(1)).current; // Bouncing animation
+  const bounceAnim = useRef(new Animated.Value(1)).current; 
 
   const revealYear = (index = 0, digits = ["2", "0", "0", "4"]) => {
     if (index < digits.length) {
@@ -20,7 +20,6 @@ export default function BirthdayLearningScreen() {
           return newDigits;
         });
 
-        // Trigger bounce effect
         Animated.sequence([
           Animated.timing(bounceAnim, { toValue: 1.2, duration: 150, useNativeDriver: true }),
           Animated.timing(bounceAnim, { toValue: 1, duration: 150, useNativeDriver: true }),
@@ -63,7 +62,7 @@ export default function BirthdayLearningScreen() {
 
       {animationPlay && (
         <LottieView
-          source={require("../../assets/animations/birthday.json")} // A cute cake animation
+          source={require("../../assets/animations/birthday.json")}
           autoPlay
           loop={false}
           style={styles.animation}

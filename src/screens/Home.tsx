@@ -38,27 +38,27 @@ const Home = ({ navigateTo }: ContentScreenProps) => {
   const options: Option[] = [
     { text: "Learn My Birthday! 🎉📅", image: require("../../assets/images/dob.png"), speechText: "Learn My Birthday!" },
     { text: "Learn Helpline Numbers! ☎️", image: require("../../assets/images/helpline.png"), speechText: "Learn Helpline Numbers!" },
+    { text: "Everyday Greetings! 👋😊", image: require("../../assets/images/greetings.png"), speechText: "Everyday Greetings!" },
+    { text: "Celebrate Festivals! 🎉🌟", image: require("../../assets/images/festivals.png"), speechText: "Celebrate Festivals" },
     { text: "Learn Traffic Signals! 🚦🚗", image: require("../../assets/images/signal.png"), speechText: "Learn Traffic Signals!" },
     { text: "Find MRP & Expiry Date!🛒🔍", image: require("../../assets/images/mrp.png"), speechText: "Find MRP & Expiry Date!" },
     { text: "Learn Mobile Features! 📱✨", image: require("../../assets/images/phone.png"), speechText: "Learn About Mobile Features" },
     { text: "Learn Computer Features! 💻", image: require("../../assets/images/computer.png"), speechText: "Learn About Computer Features" },
-    { text: "Everyday Greetings! 👋😊", image: require("../../assets/images/greetings.png"), speechText: "Everyday Greetings!" },
-    { text: "Celebrate Festivals! 🎉🌟", image: require("../../assets/images/festivals.png"), speechText: "Celebrate Festivals" },
     /*{ text: "How Do I Feel? 😊🎭", image: require("../../assets/images/emotions.png"), speechText: "How Do I Feel?" },*/
   ];
 
   return (
     <View style={{ flex: 1, backgroundColor: "#F3F8FF" }}>
-      <Header name="Khushali" age={20} />
+      <Header name="Eklavya" age={16} />
       <ScrollView contentContainerStyle={{ alignItems: "center", paddingVertical: 20 }}>
         {options.map((item, index) => {
           const backgroundColor = selectedItem === item.speechText ? "#1E40AF" : colors[index % colors.length];
-          const borderColor = darkenColor(backgroundColor, 20); // Darken the button color for border
+          const borderColor = darkenColor(backgroundColor, 20); 
 
           return (
             <TouchableOpacity
               key={index}
-              style={{
+              style={{ 
                 backgroundColor,
                 padding: 4,
                 borderRadius: 8,

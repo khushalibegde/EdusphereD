@@ -43,35 +43,29 @@ export default function Profile() {
 
   return (
     <View style={styles.container}>
-      {/* Profile Image */}
       <Image source={require("../../assets/images/pfp1.png")} style={styles.profileImage} />
       
-      {/* User Details */}
       <Text style={styles.name}>Khushali Begde</Text>
       <Text style={styles.username}>@khushi_sparkle</Text>
       <Text style={styles.age}>Age: 12</Text>
       <Text style={styles.bio}>🌟 Always Smiling | Loves Music 🎶 | Super Friendly 🤗</Text>
       <Text style={styles.location}>📍 Nagpur</Text>
       
-      {/* Preferred Learning Style */}
       <Text style={styles.sectionTitle}>Learning Style</Text>
       <Text style={styles.learningStyle}>🎨 Visual | 🎵 Auditory | 🤲 Hands-on</Text>
       
-      {/* Fun Badges */}
       <View style={styles.badgeContainer}>
         <View style={styles.badge}><FontAwesome5 name="star" size={20} color="#FFD700" /><Text style={styles.badgeText}>Superstar</Text></View>
         <View style={styles.badge}><FontAwesome5 name="music" size={20} color="#1E90FF" /><Text style={styles.badgeText}>Music Lover</Text></View>
         <View style={styles.badge}><FontAwesome5 name="heart" size={20} color="#FF69B4" /><Text style={styles.badgeText}>Kind Soul</Text></View>
       </View>
       
-      {/* Heart Button */}
       <TouchableOpacity style={styles.heartButton} onPress={handleHeartPress}>
         <Animated.View style={{ transform: [{ scale: heartScale }] }}>
-          <FontAwesome5 name="heart" size={30} color="#FF69B4" />
+          <FontAwesome5 name="heart" size={40} color="#FF69B4" />
         </Animated.View>
       </TouchableOpacity>
 
-      {/* Floating Hearts */}
       {hearts.map((heart) => (
         <Animated.View key={heart.id} style={[styles.floatingHeart, {
           opacity: heart.animation,
