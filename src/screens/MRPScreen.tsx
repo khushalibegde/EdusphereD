@@ -95,7 +95,7 @@ const MRPScreen = () => {
 
   useEffect(() => {
     if (!hasSpoken.current) {
-      speak("Welcome to MRP and Expiry Date Finder! Let's learn to find prices and expiry dates on products. Use the buttons below to learn more!");
+      speak("Welcome! Let’s learn to find the price and expiry date on things. Tap the buttons to begin!");
       hasSpoken.current = true;
     }
   }, []);

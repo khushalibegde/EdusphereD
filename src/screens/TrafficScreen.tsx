@@ -12,6 +12,7 @@ import {
 import * as Speech from "expo-speech";
 import * as Animatable from "react-native-animatable";
 import ConfettiCannon from "react-native-confetti-cannon";
+import { Svg, Path, Circle, Rect } from "react-native-svg";
 
 // Types
 interface Signal {
@@ -104,7 +105,30 @@ const TrafficSignal: React.FC<{ signal: Signal; isActive: boolean }> = ({ signal
 
 const Car: React.FC<{ position: Animated.Value; isMoving: boolean }> = ({ position, isMoving }) => (
   <Animated.View style={[styles.carContainer, { transform: [{ translateX: position }] }]}>
-    <Text style={[styles.carEmoji, isMoving && styles.carMoving]}>🚗</Text>
+    <Svg width="60" height="60" viewBox="0 0 512 512">
+      {/* Car Body */}
+      <Path
+        d="M120 280C120 260 140 240 160 240H352C372 240 392 260 392 280V320C392 340 372 360 352 360H160C140 360 120 340 120 320V280Z"
+        fill="#FF0000"
+      />
+      {/* Car Roof */}
+      <Path
+        d="M160 240C160 220 180 200 200 200H312C332 200 352 220 352 240V280H160V240Z"
+        fill="#FF0000"
+      />
+      {/* Windows */}
+      <Path
+        d="M180 220C180 210 190 200 200 200H312C322 200 332 210 332 220V260H180V220Z"
+        fill="#87CEEB"
+      />
+      {/* Wheels */}
+      <Circle cx="180" cy="360" r="40" fill="#000000" />
+      <Circle cx="332" cy="360" r="40" fill="#000000" />
+      {/* Headlight */}
+      <Circle cx="380" cy="300" r="20" fill="#FFD700" />
+      {/* Taillight */}
+      <Circle cx="132" cy="300" r="20" fill="#FF0000" />
+    </Svg>
   </Animated.View>
 );
 
@@ -190,7 +214,7 @@ const TrafficScreen = () => {
     } else {
       // For red and yellow, move car back to start
       Animated.timing(carPosition, {
-        toValue: 0,
+        toValue: 1,
         duration: 1000,
         useNativeDriver: true
       }).start();
@@ -237,17 +261,7 @@ const TrafficScreen = () => {
             <TrafficSignal signal={currentSignal} isActive={true} />
           </View>
           <View style={styles.carTrack}>
-            <Animated.View style={[
-              styles.carContainer,
-              {
-                transform: [
-                  { translateX: carPosition },
-                  { scale: carScale }
-                ]
-              }
-            ]}>
-              <Text style={styles.carEmoji}>🚗</Text>
-            </Animated.View>
+            <Car position={carPosition} isMoving={true} />
           </View>
         </View>
 
@@ -336,12 +350,6 @@ const styles = StyleSheet.create({
     height: 60,
     justifyContent: "center",
     alignItems: "center",
-  },
-  carEmoji: {
-    fontSize: 50,
-  },
-  carMoving: {
-    transform: [{ scale: 1.2 }],
   },
   signalsContainer: {
     flexDirection: "row",
