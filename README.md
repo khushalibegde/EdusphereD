@@ -57,4 +57,15 @@ EduSphere **transforms learning into an engaging adventure**, making it:
    ```bash
    git clone https://github.com/your-username/edusphere.git
    cd edusphere
+2. **Install Dependencies:**  
+   ```bash
+   npm install
+3. **Start the Development Server:**  
+   ```bash
+   npx expo start
+4. **Run on Emulator or Expo Go:**  
+   Open Expo Go on your mobile and scan the QR code
+   Or run it on an emulator
+
+
 
