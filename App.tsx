@@ -28,20 +28,23 @@ import MorningScreen from "./src/screens/MorningScreen";
 import NightScreen from "./src/screens/NightScreen";
 import HelloScreen from "./src/screens/HelloScreen";
 import MeetScreen from "./src/screens/MeetScreen";
+import PartDetailsScreen from "./src/screens/PartDetailsScreen";
 
 export default function App() {
-  const [currentScreen, setCurrentScreen] = useState("Home");
-  const [previousScreen, setPreviousScreen] = useState<string | null>(null);
+  type ScreenState = { name: string; params?: any };
+  
+  const [currentScreen, setCurrentScreen] = useState<ScreenState>({ name: "Home", params: {} });
+  const [previousScreen, setPreviousScreen] = useState<ScreenState | null>(null);
 
-  const navigateTo = (screen: string) => {
-    setPreviousScreen(currentScreen); 
-    setCurrentScreen(screen);
+  const navigateTo = (screen: string, params: any = {}) => {  
+    setPreviousScreen(currentScreen);
+    setCurrentScreen({ name: screen, params });
   };
 
   useEffect(() => {
     const handleBackPress = () => {
-      if (currentScreen !== "Home") {
-        setCurrentScreen(previousScreen || "Home");
+      if (currentScreen.name !== "Home") {
+        setCurrentScreen(previousScreen || { name: "Home", params: {} });
         return true; 
       } else {
         Alert.alert("Exit App", "Do you want to exit?", [
@@ -59,38 +62,44 @@ export default function App() {
     };
   }, [currentScreen, previousScreen]);
 
+  const renderScreen = () => {
+    switch (currentScreen.name) {
+      case "Home": return <Home navigateTo={navigateTo} />;
+      case "Mood": return <Mood />;
+      case "Profile": return <Profile />;
+      case "BirthdayScreen": return <BirthdayScreen />;
+      case "MRPScreen": return <MRPScreen />;
+      case "ComputerScreen": return <ComputerScreen navigateTo={navigateTo} />;
+      case "GreetingsScreen": return <GreetingsScreen navigateTo={navigateTo} />;
+      case "HelplineScreen": return <HelplineScreen navigateTo={navigateTo} />;
+      case "MobileScreen": return <MobileScreen />;
+      case "TrafficScreen": return <TrafficScreen />;
+      case "Feelings": return <Feelings />;
+      case "RescueScreen": return <RescueScreen />;
+      case "FestivalSelection": return <FestivalSelection navigateTo={navigateTo} />;
+      case "DiwaliPage": return <DiwaliPage navigateTo={navigateTo} />;
+      case "DiwaliItemsPage": return <DiwaliItemsPage navigateTo={navigateTo} />;
+      case "DiwaliPracticePage": return <DiwaliPracticePage />;
+      case "EidPage": return <EidPage navigateTo={navigateTo} />;
+      case "EidItemsPage": return <EidItemsPage navigateTo={navigateTo} />;
+      case "EidPracticePage": return <EidPracticePage />;
+      case "ChristmasPage": return <ChristmasPage navigateTo={navigateTo} />;
+      case "ChristmasItemsPage": return <ChristmasItemsPage navigateTo={navigateTo} />;
+      case "ChristmasPracticePage": return <ChristmasPracticePage />;
+      case "MorningScreen": return <MorningScreen />;
+      case "NightScreen": return <NightScreen />;
+      case "HelloScreen": return <HelloScreen />;
+      case "MeetScreen": return <MeetScreen />;
+      case "PartDetailsScreen":
+        return <PartDetailsScreen navigateTo={navigateTo} part={currentScreen.params.part} />
+      default: return <Home navigateTo={navigateTo} />;
+    }
+  };
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <View style={styles.container}>
-        <View style={styles.screenContainer}>
-          {currentScreen === "Home" && <Home navigateTo={navigateTo} />}
-          {currentScreen === "Mood" && <Mood />}
-          {currentScreen === "Profile" && <Profile />}
-          {currentScreen === "BirthdayScreen" && <BirthdayScreen />}
-          {currentScreen === "MRPScreen" && <MRPScreen />}
-          {currentScreen === "ComputerScreen" && <ComputerScreen />}
-          {currentScreen === "GreetingsScreen" && <GreetingsScreen navigateTo={navigateTo} />}
-          {currentScreen === "HelplineScreen" && <HelplineScreen navigateTo={navigateTo} />}
-          {currentScreen === "MobileScreen" && <MobileScreen />}
-          {currentScreen === "TrafficScreen" && <TrafficScreen />}
-          {currentScreen === "Feelings" && <Feelings />}
-          {currentScreen === "RescueScreen" && <RescueScreen />}
-          {currentScreen === "FestivalSelection" && <FestivalSelection navigateTo={navigateTo} />}
-          {currentScreen === "DiwaliPage" && <DiwaliPage navigateTo={navigateTo} />}
-          {currentScreen === "DiwaliItemsPage" && <DiwaliItemsPage navigateTo={navigateTo} />}
-          {currentScreen === "DiwaliPracticePage" && <DiwaliPracticePage />}
-          {currentScreen === "EidPage" && <EidPage navigateTo={navigateTo} />}
-          {currentScreen === "EidItemsPage" && <EidItemsPage navigateTo={navigateTo} />}
-          {currentScreen === "EidPracticePage" && <EidPracticePage />}
-          {currentScreen === "ChristmasPage" && <ChristmasPage navigateTo={navigateTo} />}
-          {currentScreen === "ChristmasItemsPage" && <ChristmasItemsPage navigateTo={navigateTo} />}
-          {currentScreen === "ChristmasPracticePage" && <ChristmasPracticePage />}
-          {currentScreen === "MorningScreen" && <MorningScreen />}
-          {currentScreen === "NightScreen" && <NightScreen />}
-          {currentScreen === "HelloScreen" && <HelloScreen />}
-          {currentScreen === "MeetScreen" && <MeetScreen />}
-        </View>
-
+        <View style={styles.screenContainer}>{renderScreen()}</View>
         <View style={styles.bottomTabContainer}>
           <BottomTabBar navigateTo={navigateTo} />
         </View>

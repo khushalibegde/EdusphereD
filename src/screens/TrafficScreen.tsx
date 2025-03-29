@@ -35,7 +35,7 @@ interface Question {
 }
 
 // Constants
-const SPEECH_CONFIG = { language: "hi-IN", pitch: 1.0, rate: 0.8 };
+const SPEECH_CONFIG = { language: "hi-IN", pitch: 1.0, rate: 1.2 };
 
 const SIGNALS: Signal[] = [
   {
